@@ -3,12 +3,6 @@ language: node_js
 services:
   -docker
 
-install:
-  - echo "nothing needs to be installed"
-
-before_scripts:
-  -echo "no tests"
-
 script:
   -docker build -t udagram-api-feed ./udagram-api-feed
   -docker build -t udagram-api-user ./udagram-api-user
