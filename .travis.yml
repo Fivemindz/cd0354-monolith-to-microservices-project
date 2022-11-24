@@ -17,3 +17,4 @@ script:
   - docker push fivemindz/udagram-api-user:v1
   - docker push fivemindz/udagram-frontend:v1
   - docker push fivemindz/udagram-reverseproxy:v1
+  
