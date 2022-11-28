@@ -12,3 +12,4 @@ modules*
 # named modules
 **/modules
 configfiles
+node_modules
