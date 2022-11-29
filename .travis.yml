@@ -10,11 +10,11 @@ script:
   - docker build -t udagram-reverseproxy ./udagram-reverseproxy
   - docker tag udagram-api-feed fivemindz/udagram-api-feed:v1
   - docker tag udagram-api-user fivemindz/udagram-api-user:v1
-  - docker tag udagram-frontend fivemindz/udagram-frontend:local
+  - docker tag udagram-frontend fivemindz/udagram-frontend:v1
   - docker tag udagram-reverseproxy fivemindz/udagram-reverseproxy:v1
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker push fivemindz/udagram-api-feed:v1
   - docker push fivemindz/udagram-api-user:v1
-  - docker push fivemindz/udagram-frontend:local
+  - docker push fivemindz/udagram-frontend:v1
   - docker push fivemindz/udagram-reverseproxy:v1
   
