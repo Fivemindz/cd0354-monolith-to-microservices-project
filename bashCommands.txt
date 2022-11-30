@@ -1,0 +1,58 @@
+#connect to postgres database
+psql -h database-1.cltenjkxq0to.us-east-1.rds.amazonaws.com -U postgres postgres
+
+#create EKS cluster
+eksctl create cluster --name myCluster --region us-east-1 --version 1.24 --vpc-private-subnets subnet-0f2d4411ff897e12e,subnet-0ffa5b339712ee9c5 --without-nodegroup
+
+#create EKS cluster with nodegroup
+eksctl create cluster --name myCluster --region=us-east-1 --nodes-min=1 --nodes-max=2
+
+#update kubeconfig
+aws eks --region us-east-1 update-kubeconfig --name myCluster
+
+# Apply env variables and secrets
+kubectl apply -f aws-secret.yaml
+kubectl apply -f env-secret.yaml
+kubectl apply -f env-config.yaml 
+
+# Apply deployment files
+kubectl apply -f deployment-feed.yaml
+kubectl apply -f deployment-frontend.yaml
+kubectl apply -f deployment-reverseproxy.yaml
+kubectl apply -f deployment-user.yaml 
+
+# Apply service files
+kubectl apply -f service-feed.yaml
+kubectl apply -f service-frontend.yaml
+kubectl apply -f service-reverseproxy.yaml
+kubectl apply -f service-user.yaml 
+
+#create external load balancers
+kubectl expose deployment frontend --type=LoadBalancer --name=publicfrontend
+kubectl expose deployment reverseproxy --type=LoadBalancer --name=publicreverseproxy
+
+#status checks
+kubectl get deployments
+kubectl get services
+kubectl get pods
+
+#attach to a container
+kubectl exec -it {pod_name} sh
+kubectl exec -it {pod_name} bash
+
+#delete commands
+kubectl delete -f deployment-feed.yaml
+kubectl delete -f deployment-frontend.yaml
+kubectl delete -f deployment-reverseproxy.yaml
+kubectl delete -f deployment-user.yaml
+kubectl delete -f service-feed.yaml
+kubectl delete -f service-frontend.yaml
+kubectl delete -f service-reverseproxy.yaml
+kubectl delete -f service-user.yaml
+
+#docker commands
+docker build . -t fivemindz/udagram-frontend:v3
+docker push fivemindz/udagram-frontend:v3
+
+#rebuild image with new docker image
+kubectl set image deployment frontend frontend=fivemindz/udagram-frontend:v3
