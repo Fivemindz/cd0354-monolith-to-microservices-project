@@ -56,3 +56,7 @@ docker push fivemindz/udagram-frontend:v3
 
 #rebuild image with new docker image
 kubectl set image deployment frontend frontend=fivemindz/udagram-frontend:v3
+
+#Delete Eks Cluster and associated nodes
+#Must delete any services with public Ip adresses first
+eksctl delete cluster --name prod
