@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: fivemindz/udagram-frontend:v1
+        image: fivemindz/udagram-frontend:v2
         ports:
         - containerPort: 80
